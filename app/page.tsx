@@ -12,7 +12,7 @@ export default function SyntheticV0PageForDeployment() {
     const ablyClient = new Ably.Realtime({
       authUrl: "https://v0-live-mural-gallery-q7dtqa5vvli.vercel.app/api/token",
       defaultTokenParams: {
-        clientId: "*"
+        clientId: "mural"
       }
     });
     setAbly(ablyClient);

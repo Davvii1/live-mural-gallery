@@ -6,7 +6,9 @@ const ably = new Ably.Rest({
 });
 
 export async function GET(request: Request) {
-  const tokenRequest = await ably.auth.createTokenRequest({ clientId: "*" });
+  const tokenRequest = await ably.auth.createTokenRequest({
+    clientId: "mural",
+  });
 
   return Response.json(tokenRequest);
 }
