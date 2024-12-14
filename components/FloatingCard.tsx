@@ -46,6 +46,7 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
       color: 0xffffff,
       metalness: 0.0,
       roughness: 0.6,
+      transparent: true,
     })
   }, [texture])
 

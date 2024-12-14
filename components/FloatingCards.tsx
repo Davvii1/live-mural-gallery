@@ -13,12 +13,11 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImag
 
   useEffect(() => {
     if (lastImageId > cardsRef.current.length) {
-      const randomId = Math.floor(Math.random() * 1000)
-      const imageUrl = `https://picsum.photos/seed/${randomId}/300/400`
+      const imageUrl = lastImageURL
       const newCard = (
         <FloatingCard
           key={lastImageId}
-          imageUrl={lastImageURL}
+          imageUrl={imageUrl}
           isNew={true}
         />
       )
