@@ -9,13 +9,16 @@ import { useChannel } from 'ably/react'
 
 export default function App() {
   const [lastImageId, setLastImageId] = useState(3)
+  const [lastImageURL, setLastImageURL] = useState("")
 
   const handleNewImage = useCallback(() => {
     setLastImageId(prevId => prevId + 1)
   }, [])
 
   const { channel } = useChannel('photos', 'photoUploaded', (message) => {
-    console.log(message);
+    setLastImageId(prevId => prevId + 1)
+    setLastImageURL(message.data);
+    console.log(message.data)
   });
 
   return (
@@ -24,7 +27,7 @@ export default function App() {
         <ambientLight intensity={1.7} />
         <pointLight position={[10, 10, 10]} intensity={0.8} />
         <pointLight position={[-10, -10, -10]} intensity={0.8} />
-        <FloatingCards lastImageId={lastImageId} />
+        <FloatingCards lastImageId={lastImageId} lastImageURL={lastImageURL} />
         <OrbitControls enableZoom={false} />
       </Canvas>
       <ImagePlaceholderButton onNewImage={handleNewImage} />

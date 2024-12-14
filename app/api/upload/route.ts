@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
   const photosChannel = ably.channels.get("photos");
 
-  await photosChannel.publish("photoUploaded", data);
+  await photosChannel.publish("photoUploaded", data.file);
 
   return Response.json({ message: "Message sent!" });
 }

@@ -5,9 +5,10 @@ import { FloatingCard } from './FloatingCard'
 
 interface FloatingCardsProps {
   lastImageId: number
+  lastImageURL: string
 }
 
-export const FloatingCards = memo(function FloatingCards({ lastImageId }: FloatingCardsProps) {
+export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImageURL }: FloatingCardsProps) {
   const cardsRef = useRef<JSX.Element[]>([])
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId }: Floati
       const newCard = (
         <FloatingCard
           key={lastImageId}
-          imageUrl={imageUrl}
+          imageUrl={lastImageURL}
           isNew={true}
         />
       )
