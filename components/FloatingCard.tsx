@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import * as THREE from 'three'
 import { Vector3, TextureLoader, MeshStandardMaterial, Color } from 'three'
 
 interface FloatingCardProps {
@@ -33,6 +34,7 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
     setIsLoading(true)
     setHasError(false)
 
+    console.log("Image URL from FC", imageUrl)
     loader.load(
       imageUrl,
       (loadedTexture) => {
