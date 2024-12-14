@@ -10,9 +10,10 @@ interface FloatingCardsProps {
 
 export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImageURL }: FloatingCardsProps) {
   const cardsRef = useRef<JSX.Element[]>([])
+  const lastImageURLRef = useRef<string | null>(null)
 
   useEffect(() => {
-    if (lastImageId > cardsRef.current.length && lastImageURL) {
+    if (lastImageId > cardsRef.current.length && lastImageURL !== lastImageURLRef.current) {
       const newCard = (
         <FloatingCard
           key={lastImageId}
@@ -21,6 +22,7 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImag
         />
       )
       cardsRef.current = [...cardsRef.current, newCard]
+      lastImageURLRef.current = lastImageURL
     }
   }, [lastImageId])
 
