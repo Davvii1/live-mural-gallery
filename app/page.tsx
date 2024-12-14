@@ -9,7 +9,7 @@ const ably = new Ably.Realtime({
   authUrl: "https://v0-live-mural-gallery-q7dtqa5vvli.vercel.app/api/token",
 });
 
-export default function SyntheticV0PageForDeployment() {
+export default async function SyntheticV0PageForDeployment() {
   return (
     <AblyProvider client={ably}>
       <ChannelProvider channelName='photos'>
