@@ -12,7 +12,7 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImag
   const cardsRef = useRef<JSX.Element[]>([])
 
   useEffect(() => {
-    if (lastImageId > cardsRef.current.length) {
+    if (lastImageId > cardsRef.current.length && lastImageURL) {
       const newCard = (
         <FloatingCard
           key={lastImageId}
