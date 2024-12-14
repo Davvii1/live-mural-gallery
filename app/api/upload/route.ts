@@ -1,7 +1,7 @@
 import Ably from "ably";
 
 export async function POST(request: Request) {
-  console.log(request);
+  console.log("Request:", request);
   const ably = new Ably.Rest({ key: process.env.ABLY_API_KEY });
 
   const photosChannel = ably.channels.get("photos");
