@@ -28,7 +28,7 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
 
   useEffect(() => {
     const loader = new TextureLoader()
-    loader.setCrossOrigin('anonymous')
+    loader.crossOrigin = 'anonymous'
     loader.load(
       imageUrl,
       (loadedTexture) => {
