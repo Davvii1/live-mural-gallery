@@ -28,6 +28,7 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
 
   useEffect(() => {
     const loader = new TextureLoader()
+    loader.setCrossOrigin('anonymous')
     loader.load(
       imageUrl,
       (loadedTexture) => {
@@ -46,7 +47,6 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
       color: 0xffffff,
       metalness: 0.0,
       roughness: 0.6,
-      transparent: true,
     })
   }, [texture])
 
