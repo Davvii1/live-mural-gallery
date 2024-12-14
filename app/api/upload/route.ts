@@ -5,6 +5,9 @@ export async function POST(request: Request) {
   const ably = new Ably.Rest({
     key: process.env.ABLY_API_KEY,
     queryTime: true,
+    defaultTokenParams: {
+      clientId: "*",
+    },
   });
 
   const photosChannel = ably.channels.get("photos");
