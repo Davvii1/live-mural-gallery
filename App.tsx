@@ -3,6 +3,7 @@ import { OrbitControls } from '@react-three/drei'
 import { useState, useCallback } from 'react'
 import { FloatingCards } from './components/FloatingCards'
 import { ImagePlaceholderButton } from './components/ImagePlaceholderButton'
+import { useChannel } from 'ably/react'
 
 export default function App() {
   const [lastImageId, setLastImageId] = useState(3)
@@ -10,6 +11,10 @@ export default function App() {
   const handleNewImage = useCallback(() => {
     setLastImageId(prevId => prevId + 1)
   }, [])
+
+  const { channel } = useChannel('photos', 'photoUploaded', (message) => {
+    console.log(message);
+  });
 
   return (
     <div className="w-full h-screen bg-gray-900 relative">
