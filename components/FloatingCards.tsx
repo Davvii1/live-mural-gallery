@@ -13,7 +13,7 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImag
   const [lastImageURLRef, setLastImageURLRef] = useState<string | null>(null)
 
   useEffect(() => {
-    if (lastImageId > cardsRef.current.length && lastImageURL != lastImageURLRef) {
+    if (lastImageId > cardsRef.current.length && lastImageURL !== lastImageURLRef) {
       const newCard = (
         <FloatingCard
           key={lastImageId}
