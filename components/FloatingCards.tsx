@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useRef, useEffect } from 'react'
+import { memo, useRef, useEffect, useState } from 'react'
 import { FloatingCard } from './FloatingCard'
 
 interface FloatingCardsProps {
@@ -10,10 +10,10 @@ interface FloatingCardsProps {
 
 export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImageURL }: FloatingCardsProps) {
   const cardsRef = useRef<JSX.Element[]>([])
-  const lastImageURLRef = useRef<string | null>(null)
+  const [lastImageURLRef, setLastImageURLRef] = useState<string | null>(null)
 
   useEffect(() => {
-    if (lastImageId > cardsRef.current.length && lastImageURL !== lastImageURLRef.current) {
+    if (lastImageId > cardsRef.current.length && lastImageURL != lastImageURLRef) {
       const newCard = (
         <FloatingCard
           key={lastImageId}
@@ -22,7 +22,7 @@ export const FloatingCards = memo(function FloatingCards({ lastImageId, lastImag
         />
       )
       cardsRef.current = [...cardsRef.current, newCard]
-      lastImageURLRef.current = lastImageURL
+      setLastImageURLRef(lastImageURL)
     }
   }, [lastImageId])
 
