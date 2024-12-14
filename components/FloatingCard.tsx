@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3, TextureLoader, MeshStandardMaterial } from 'three'
+import { Vector3, TextureLoader, MeshStandardMaterial, Color } from 'three'
 
 interface FloatingCardProps {
   imageUrl: string
@@ -25,30 +25,43 @@ export function FloatingCard({ imageUrl, isNew }: FloatingCardProps) {
   const [scale] = useState(() => new Vector3(isNew ? 0.001 : 1, isNew ? 0.001 : 1, isNew ? 0.001 : 1))
 
   const [texture, setTexture] = useState<THREE.Texture | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     const loader = new TextureLoader()
-    loader.crossOrigin = 'anonymous'
+    setIsLoading(true)
+    setHasError(false)
+
     loader.load(
       imageUrl,
       (loadedTexture) => {
         setTexture(loadedTexture)
+        setIsLoading(false)
       },
       undefined,
       (error) => {
         console.error('An error occurred while loading the texture', error)
+        setIsLoading(false)
+        setHasError(true)
       }
     )
   }, [imageUrl])
 
   const imageMaterial = useMemo(() => {
-    return new MeshStandardMaterial({
-      map: texture,
-      color: 0xffffff,
-      metalness: 0.0,
-      roughness: 0.6,
-    })
-  }, [texture])
+    if (isLoading) {
+      return new MeshStandardMaterial({ color: new Color(0xcccccc) })
+    } else if (hasError) {
+      return new MeshStandardMaterial({ color: new Color(0xff0000) })
+    } else {
+      return new MeshStandardMaterial({
+        map: texture,
+        color: 0xffffff,
+        metalness: 0.0,
+        roughness: 0.6,
+      })
+    }
+  }, [texture, isLoading, hasError])
 
   useEffect(() => {
     if (mesh.current) {
