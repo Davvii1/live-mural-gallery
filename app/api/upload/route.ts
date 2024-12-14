@@ -1,6 +1,7 @@
 import Ably from "ably";
 
 export async function POST(request: Request) {
+  const data = await request.json();
   const ably = new Ably.Rest({
     key: process.env.ABLY_API_KEY,
     queryTime: true,
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
 
   await photosChannel.publish(
     "photoUploaded",
-    JSON.stringify({ message: request, body: request.body })
+    JSON.stringify({ file: data.file })
   );
 
   return Response.json({ message: "Message sent!" });
