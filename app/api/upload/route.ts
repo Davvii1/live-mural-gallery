@@ -1,14 +1,12 @@
 import Ably from "ably";
 
+const ably = new Ably.Rest({
+  key: process.env.ABLY_API_KEY,
+  queryTime: true,
+});
+
 export async function POST(request: Request) {
   const data = await request.json();
-  const ably = new Ably.Rest({
-    key: process.env.ABLY_API_KEY,
-    queryTime: true,
-    defaultTokenParams: {
-      clientId: "*",
-    },
-  });
 
   const photosChannel = ably.channels.get("photos");
 
