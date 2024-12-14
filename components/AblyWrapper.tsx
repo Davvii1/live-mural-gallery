@@ -4,7 +4,7 @@ import Ably from 'ably';
 import { ReactNode } from 'react';
 import { AblyProvider, ChannelProvider } from 'ably/react';
 
-const ably = new Ably.Realtime({ authUrl: "http://localhost:3000/api/token" });
+const ably = new Ably.Realtime({ authUrl: "https://v0-live-mural-gallery-q7dtqa5vvli.vercel.app/api/token" });
 
 export const AblyWrapper = ({ children }: { children: ReactNode }) => {
     return (
