@@ -11,13 +11,13 @@ export default function App() {
   const [lastImageId, setLastImageId] = useState(3)
   const [lastImageURL, setLastImageURL] = useState("")
 
-  const handleNewImage = useCallback(() => {
+  const handleNewImage = useCallback((imageUrl: string) => {
     setLastImageId(prevId => prevId + 1)
+    setLastImageURL(imageUrl);
   }, [])
 
   const { channel } = useChannel('photos', 'photoUploaded', (message) => {
-    setLastImageId(prevId => prevId + 1)
-    setLastImageURL(message.data);
+    handleNewImage(message.data)
     console.log(message.data)
   });
 
@@ -30,7 +30,7 @@ export default function App() {
         <FloatingCards lastImageId={lastImageId} lastImageURL={lastImageURL} />
         <OrbitControls enableZoom={false} />
       </Canvas>
-      <ImagePlaceholderButton onNewImage={handleNewImage} />
+      <ImagePlaceholderButton onNewImage={() => handleNewImage("")} />
     </div>
   )
 }
