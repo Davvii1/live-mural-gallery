@@ -41,7 +41,7 @@ export default function App(props: AppProps) {
         if (data.results.length === 0) setUrls(new Array(40).fill(dominioUpload));
 
         if (data && Array.isArray(data.results)) {
-          const updatedImages = [...new Array(40).fill(dominioUpload)];
+          const updatedImages = [...new Array(40).fill("")];
 
           data.results.forEach((imageUrl: string) => {
             const emptyIndex = updatedImages.findIndex((image) => image === "");
