@@ -30,7 +30,7 @@ export default function App(props: AppProps) {
   };
 
   useEffect(() => {
-    const dominioUpload = window.location.hostname + "/upload";
+    const dominioUpload = "https://live-mural-gallery-q7dtqa5vvli.vercel.app/upload";
 
     setImageArray(new Array(40).fill(""));
 
