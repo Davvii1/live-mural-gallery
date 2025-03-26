@@ -30,7 +30,7 @@ export default function App(props: AppProps) {
   };
 
   useEffect(() => {
-    const dominioUpload = "/upload";
+    const dominioUpload = window.location.hostname + "/upload";
 
     setImageArray(new Array(40).fill(""));
 
