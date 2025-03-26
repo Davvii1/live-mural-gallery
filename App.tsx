@@ -32,7 +32,7 @@ export default function App(props: AppProps) {
   useEffect(() => {
     const dominioUpload = window.location.hostname + "/upload";
 
-    setImageArray(new Array(40).fill(dominioUpload));
+    setImageArray(new Array(40).fill(""));
 
     const fetchImages = async () => {
       try {
