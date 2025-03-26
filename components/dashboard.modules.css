@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+}
+
+.page {
+  transition: opacity 0.5s ease-in-out; 
+}
+
+.fadeOut {
+  opacity: 0; 
+}

@@ -21,24 +21,31 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  async rewrites() {
+    const baseRewrites = [
+      {
+        source: "/api/files", // Ruta original en tu aplicación
+        destination: "https://github-nfhau4uu-xnhgz7gd.vercel.app/api/files", // La URL de destino
+      },
+    ];
+
+    const userRewrites = userConfig?.rewrites ? await userConfig.rewrites() : [];
+    return [...baseRewrites, ...userRewrites];
+  },
 };
 
-mergeConfig(nextConfig, userConfig);
+await mergeConfig(nextConfig, userConfig);
 
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return;
-  }
+async function mergeConfig(nextConfig, userConfig) {
+  if (!userConfig) return;
 
   for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === "object" &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      };
+    if (typeof nextConfig[key] === "function") {
+      const baseValue = await nextConfig[key]();
+      const userValue = await userConfig[key]();
+      nextConfig[key] = async () => [...baseValue, ...userValue];
+    } else if (typeof nextConfig[key] === "object" && !Array.isArray(nextConfig[key])) {
+      nextConfig[key] = { ...nextConfig[key], ...userConfig[key] };
     } else {
       nextConfig[key] = userConfig[key];
     }
