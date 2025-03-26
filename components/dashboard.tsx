@@ -6,7 +6,6 @@ import { logos } from "@/components/enums/logos";
 import * as Ably from "ably";
 import { AblyProvider, ChannelProvider } from "ably/react";
 import { useEffect, useState } from "react";
-import styles from "./dashboard.module.css";
 
 export default function dashboard() {
   const [page, setPage] = useState(1);
@@ -141,9 +140,9 @@ export default function dashboard() {
         <AblyProvider client={ablyClient}>
           <ChannelProvider channelName="photos">
             {page}
-            <div className={styles.container}>
+            <div className="relative">
               <div
-                className={`${styles.page} ${fadeOut ? styles.fadeOut : ""}`}
+                className={`transition-all ${fadeOut ? "opacity-0" : ""}`}
               >
                 <App
                   page={page - 1}
@@ -158,8 +157,8 @@ export default function dashboard() {
       ) : (
         <div>
           {page}
-          <div className={styles.container}>
-            <div className={`${styles.page} ${fadeOut ? styles.fadeOut : ""}`}>
+          <div className="relative">
+            <div className={`transition-all ${fadeOut ? "opacity-0" : ""}`}>
               <App
                 page={page - 1}
                 title={page === 1 ? logos.v1 : page === 2 ? logos.v2 : logos.v3}
