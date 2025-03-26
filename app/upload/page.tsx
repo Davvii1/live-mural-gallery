@@ -44,6 +44,8 @@ export default function Upload() {
                     <FileUploaderInline
                         imgOnly={true}
                         sourceList="local, camera"
+                        multiple={false}
+                        confirmUpload={true}
                         classNameUploader="uc-light"
                         pubkey="ada58ca1bcd6b5d856ef"
                         className="[&_uc-drop-area]:hidden [&_.uc-add-more-btn]:hidden [&_uc-source-btn>button]:opacity-0 [&_uc-source-btn>button]:h-0 [&_uc-icon]:h-0 [&_.uc-txt]:h-0 [&_uc-source-list]:h-0 [&_.uc-content]:p-0 [&_.uc-thumb]:h-36 [&_.uc-thumb]:w-36 [&_.uc-file-name-wrapper]:hidden [&_.uc-inner]:flex [&_.uc-inner]:flex-col [&_.uc-inner]:justify-center"
