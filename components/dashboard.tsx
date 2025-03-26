@@ -139,7 +139,7 @@ export default function dashboard() {
       {ablyClient ? (
         <AblyProvider client={ablyClient}>
           <ChannelProvider channelName="photos">
-            {page}
+            {/* {page} */}
             <div className="relative">
               <div
                 className={`transition-all ${fadeOut ? "opacity-0" : ""}`}
