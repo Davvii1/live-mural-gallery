@@ -3,6 +3,7 @@
 import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
+
 interface QRGeneratorProps {
   url: string;
   id: string;
@@ -22,6 +23,7 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isFirstMoveRef = useRef<boolean>(true);
   const [usedPositions, setUsedPositions] = useState<Set<string>>(new Set());
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -56,23 +58,38 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
     }
   };
 
-  const startAutoMovement = () => {
-    intervalRef.current = setInterval(() => {
-      if (!isDragging) {
-        let newTop = Math.random() * 100;
-        let newLeft = Math.random() * 100;
+  const moveToRandomPosition = () => {
+    if (!isDragging) {
+      let newTop = Math.random() * 100;
+      let newLeft = Math.random() * 100;
 
-        while (usedPositions.has(`${newTop}-${newLeft}`)) {
-          newTop = Math.random() * 100;
-          newLeft = Math.random() * 100;
-        }
-
-        setPosition({ top: `${newTop}%`, left: `${newLeft}%` });
-        setUsedPositions(
-          (prevPositions) => new Set(prevPositions.add(`${newTop}-${newLeft}`))
-        );
+      while (usedPositions.has(`${newTop}-${newLeft}`)) {
+        newTop = Math.random() * 100;
+        newLeft = Math.random() * 100;
       }
-    }, 8000);
+
+      setPosition({ top: `${newTop}%`, left: `${newLeft}%` });
+      setUsedPositions(
+        (prevPositions) => new Set(prevPositions.add(`${newTop}-${newLeft}`))
+      );
+    }
+  };
+
+  const startAutoMovement = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    if (isFirstMoveRef.current) {
+      setTimeout(() => {
+        moveToRandomPosition();
+        isFirstMoveRef.current = false;
+
+        intervalRef.current = setInterval(moveToRandomPosition, 8000);
+      }, 2000);
+    } else {
+      intervalRef.current = setInterval(moveToRandomPosition, 8000);
+    }
   };
 
   useEffect(() => {
@@ -118,7 +135,6 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
       }}
       onMouseDown={handleMouseDown}
       onTouchStart={(e) => {
-        // Add touch support here
         handleMouseDown(e as unknown as React.MouseEvent);
       }}
     >
