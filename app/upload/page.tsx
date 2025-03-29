@@ -60,14 +60,14 @@ export default function Upload() {
     }
 
     const handleContinue = () => {
-        router.push("/v1")
+        window.location.reload()
     }
 
     return (
         <div className='flex flex-col items-center justify-between w-full h-screen overflow-hidden'>
             <div className='h-1/5 bg-[#323233] w-full text-white flex flex-col items-center py-4 justify-between'>
                 <h1 className='text-5xl font-bold text-center'>MURAL<br />22ª. RADX</h1>
-                <p className='text-center text-[#C5ACAD] text-2xl font-bold'>Selecciona la <br /> opción deseada</p>
+                <p className='text-center text-[#C5ACAD] text-2xl font-bold [@media(max-height:750px)]:hidden'>Selecciona la <br /> opción deseada</p>
             </div>
             <div className='w-full sm:w-2/3 md:w-1/3 py-2 px-6 max-h-[60%] overflow-y-auto' id="upload-wrapper">
                 <div className='space-y-6'>
@@ -92,7 +92,9 @@ export default function Upload() {
                         <>
                             <div className='space-y-4 text-2xl bg-[#CDCCCD] p-4 rounded-md flex flex-col items-center justify-center'>
                                 <Confirm />
-                                <p className='text-[#343535] font-bold text-center'>Imagen agregada correctamente</p>
+                                <p className='text-[#343535] font-bold text-center'>
+                                    ¿Quieres agregar otra imagen?
+                                </p>
                             </div>
                             <div className='relative' onClick={handleContinue}>
                                 <p className='text-center text-white text-3xl font-bold absolute top-1/2 transform -translate-y-1/2 left-8'>CONTINUAR</p>
