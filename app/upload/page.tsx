@@ -64,7 +64,7 @@ export default function Upload() {
     }
 
     return (
-        <div className='flex flex-col items-center justify-between w-full h-screen overflow-hidden'>
+        <div className='flex flex-col items-center justify-between w-full h-dvh overflow-hidden'>
             <div className='h-1/5 bg-[#323233] w-full text-white flex flex-col items-center py-4 justify-between'>
                 <h1 className='text-5xl font-bold text-center'>MURAL<br />22ª. RADX</h1>
                 <p className='text-center text-[#C5ACAD] text-2xl font-bold [@media(max-height:750px)]:hidden'>Selecciona la <br /> opción deseada</p>
