@@ -5,11 +5,13 @@ import Ably from "ably";
 import { AblyProvider, ChannelProvider } from "ably/react";
 import { useEffect, useState } from "react";
 
-export default function a() {
-  const ably = new Ably.Realtime({
-    authUrl: "/api/token",
-  });
+const ably = new Ably.Realtime({
+  authUrl: "/api/token",
+  autoConnect: typeof window !== 'undefined',
+  clientId: "mural",
+});
 
+export default function a() {
   return (
     <AblyProvider client={ably}>
       <ChannelProvider channelName="photos"></ChannelProvider>
