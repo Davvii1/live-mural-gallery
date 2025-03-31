@@ -12,6 +12,19 @@ interface QRGeneratorProps {
   size: number;
 }
 
+const pulseStyles = `
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+  }
+}`;
+
 const QRGenerator: React.FC<QRGeneratorProps> = ({
   url,
   id,
@@ -25,6 +38,7 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isFirstMoveRef = useRef<boolean>(true);
   const [usedPositions, setUsedPositions] = useState<Set<string>>(new Set());
+  const touchOffsetRef = useRef({ x: 0, y: 0 });
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (qrRef.current) {
@@ -32,6 +46,27 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
       const top = (e.clientY / window.innerHeight) * 100;
 
       setPosition({ top: `${top}%`, left: `${left}%` });
+      setIsDragging(true);
+
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (qrRef.current) {
+      e.stopPropagation();
+
+      const touch = e.touches[0];
+      const rect = qrRef.current.getBoundingClientRect();
+
+      touchOffsetRef.current = {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
+      };
+
       setIsDragging(true);
 
       if (intervalRef.current) {
@@ -51,7 +86,39 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
     }
   };
 
+  const handleTouchMove = (e: TouchEvent) => {
+    if (isDragging && qrRef.current) {
+      e.preventDefault();
+
+      const touch = e.touches[0];
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+
+      const left =
+        ((touch.clientX -
+          touchOffsetRef.current.x +
+          qrRef.current.clientWidth / 2) /
+          viewportWidth) *
+        100;
+      const top =
+        ((touch.clientY -
+          touchOffsetRef.current.y +
+          qrRef.current.clientHeight / 2) /
+          viewportHeight) *
+        100;
+
+      setPosition({ top: `${top}%`, left: `${left}%` });
+    }
+  };
+
   const handleMouseUp = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      startAutoMovement();
+    }
+  };
+
+  const handleTouchEnd = () => {
     if (isDragging) {
       setIsDragging(false);
       startAutoMovement();
@@ -96,12 +163,26 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
+    const touchMoveHandler = (e: TouchEvent) => {
+      if (isDragging) {
+        handleTouchMove(e);
+      }
+    };
+
+    window.addEventListener("touchmove", touchMoveHandler, {
+      passive: !isDragging,
+    });
+    window.addEventListener("touchend", handleTouchEnd);
+
     const initialDelay = index * 100;
     const timer = setTimeout(startAutoMovement, initialDelay);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+
+      window.removeEventListener("touchmove", touchMoveHandler);
+      window.removeEventListener("touchend", handleTouchEnd);
 
       clearTimeout(timer);
 
@@ -118,28 +199,33 @@ const QRGenerator: React.FC<QRGeneratorProps> = ({
   }, [index, isDragging, position.top, position.left]);
 
   return (
-    <div
-      ref={qrRef}
-      id={id}
-      className={`absolute p-4 bg-white border border-gray-300 rounded-lg shadow-lg ${
-        isDragging ? "cursor-grabbing shadow-xl z-50" : "cursor-grab"
-      }`}
-      style={{
-        top: position.top,
-        left: position.left,
-        transform: "translate(-50%, -50%)",
-        transition: isDragging
-          ? "top 0s ease, left 0s ease"
-          : "top 8s ease, left 8s ease",
-        zIndex: isDragging ? 50 : index,
-      }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={(e) => {
-        handleMouseDown(e as unknown as React.MouseEvent);
-      }}
-    >
-      <QRCodeSVG value={url} size={isDragging ? 128 : size} />
-    </div>
+    <>
+      <style jsx>{pulseStyles}</style>
+
+      <div
+        ref={qrRef}
+        id={id}
+        className={`absolute p-4 bg-white border border-gray-300 rounded-lg shadow-lg ${
+          isDragging
+            ? "cursor-grabbing shadow-xl z-50 border-2 border-orange-500 animate-pulse"
+            : "cursor-grab"
+        }`}
+        style={{
+          top: position.top,
+          left: position.left,
+          transform: "translate(-50%, -50%)",
+          transition: isDragging
+            ? "top 0s ease, left 0s ease"
+            : "top 8s ease, left 8s ease",
+          zIndex: isDragging ? 50 : index,
+          animation: isDragging ? "pulse 2s infinite" : "none",
+        }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+      >
+        <QRCodeSVG value={url} size={isDragging ? 128 : size} />
+      </div>
+    </>
   );
 };
 
