@@ -14,6 +14,7 @@ export default function dashboard() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [ablyClient, setAblyClient] = useState<Ably.Realtime | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSping, setIsSping] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -114,6 +115,9 @@ export default function dashboard() {
       } else if (event.key === "Enter") {
         toggleAutoPagination();
       }
+      if (event.key === "a") {
+        setIsSping((prev) => !prev);
+      }
     };
 
     document.addEventListener("keydown", handleKeyDown);
@@ -139,16 +143,14 @@ export default function dashboard() {
       {ablyClient ? (
         <AblyProvider client={ablyClient}>
           <ChannelProvider channelName="photos">
-            {/* {page} */}
             <div className="relative">
-              <div
-                className={`transition-all ${fadeOut ? "opacity-0" : ""}`}
-              >
+              <div className={`transition-all ${fadeOut ? "opacity-0" : ""}`}>
                 <App
                   page={page - 1}
                   title={
                     page === 1 ? logos.v1 : page === 2 ? logos.v2 : logos.v3
                   }
+                  isSping={isSping}
                 />
               </div>
             </div>
@@ -162,6 +164,7 @@ export default function dashboard() {
               <App
                 page={page - 1}
                 title={page === 1 ? logos.v1 : page === 2 ? logos.v2 : logos.v3}
+                isSping={isSping}
               />
             </div>
           </div>
