@@ -32,7 +32,7 @@ export default function App(props: AppProps) {
   const canMoveImages = urls.length === 0
 
   useEffect(() => {
-    const dominioUpload = "https://live-mural-gallery-q7dtqa5vvli.vercel.app/upload"
+    const dominioUpload = "https://live-mural-gallery-clon.vercel.app/upload"
 
     // Check if we already have cached data for this page
     if (imageCache[props.page]) {
