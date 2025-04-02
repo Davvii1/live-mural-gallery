@@ -25,7 +25,7 @@ const nextConfig = {
     const baseRewrites = [
       {
         source: "/api/files", // Ruta original en tu aplicación
-        destination: "https://github-nfhau4uu-xnhgz7gd-5pt3bnrzp-davvii1s-projects.vercel.app/api/files", // La URL de destino
+        destination: "https://github-nfhau4uu-xnhgz7gd-nd9v-clon.vercel.app/api/files", // La URL de destino
       },
     ];
 
