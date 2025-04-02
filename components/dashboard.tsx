@@ -28,6 +28,7 @@ export default function dashboard() {
         authParams: {
           ttl: (30 * 60 * 1000).toString(),
         },
+        autoConnect: typeof window !== 'undefined',
         clientId: "live-gallery-mural",
       });
 
