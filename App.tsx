@@ -28,6 +28,8 @@ export default function App(props: AppProps) {
   const gridRef = useRef<HTMLDivElement>(null)
   const prevPageRef = useRef<number>(props.page)
 
+const [isTopQRShowing, setIsTopQRShowing] = useState(false)
+
   // Flag to check if movement is allowed (no QR codes present)
   const canMoveImages = urls.length === 0
 
@@ -231,6 +233,20 @@ export default function App(props: AppProps) {
     setDraggedImage(null)
     setDragPosition(null)
   }
+
+useEffect(() => {
+    const handleMKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "m") {
+        setIsTopQRShowing((prev) => !prev)
+      }
+    }
+
+    window.addEventListener("keydown", handleMKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleMKeyDown)
+    }
+  }, [isTopQRShowing])
 
   // Mouse handlers
   const handleMouseDown = (index: number) => (e: React.MouseEvent) => {
@@ -488,6 +504,13 @@ export default function App(props: AppProps) {
           ))}
         </div>
       )}
+
+ {isTopQRShowing ? (
+        <div className="absolute z-50 bottom-10 right-10 rounded-md bg-white p-4 shadow-lg">
+          <QRCodeSVG value="https://live-mural-gallery-q7dtqa5vvli.vercel.app/upload" />
+        </div>
+      ) : null}
+
     </div>
   )
 }
