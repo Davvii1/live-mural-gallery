@@ -507,7 +507,7 @@ useEffect(() => {
 
  {isTopQRShowing ? (
         <div className="absolute z-50 bottom-10 right-10 rounded-md bg-white p-4 shadow-lg">
-          <QRCodeSVG value="https://live-mural-gallery-q7dtqa5vvli.vercel.app/upload" />
+          <QRCodeSVG value="https://live-mural-gallery-clon.vercel.app/upload" />
         </div>
       ) : null}
 
