@@ -7,6 +7,7 @@ import QRGenerator from "@/components/qr-generator"
 import FrameRotation from "./components/svg/frameRotation"
 import DrawingCanvas from "./components/drawing-canvas"
 import LogoSienteLaEnergia from "./components/svg/logoSienteLaenergia"
+import { QRCodeSVG } from "qrcode.react"
 interface AppProps {
   page: number
   title: string
