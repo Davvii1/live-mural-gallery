@@ -7,6 +7,7 @@ import QRGenerator from "@/components/qr-generator"
 import FrameRotation from "./components/svg/frameRotation"
 import DrawingCanvas from "./components/drawing-canvas"
 import LogoSienteLaEnergia from "./components/svg/logoSienteLaenergia"
+import { QRCodeSVG } from "qrcode.react"
 interface AppProps {
   page: number
   title: string
@@ -27,6 +28,8 @@ export default function App(props: AppProps) {
   const [canvasData, setCanvasData] = useState<string | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const prevPageRef = useRef<number>(props.page)
+
+  const [isTopQRShowing, setIsTopQRShowing] = useState(false)
 
   // Flag to check if movement is allowed (no QR codes present)
   const canMoveImages = urls.length === 0
@@ -290,6 +293,20 @@ export default function App(props: AppProps) {
     setDragPosition(null)
   }
 
+  useEffect(() => {
+    const handleMKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "m") {
+        setIsTopQRShowing((prev) => !prev)
+      }
+    }
+
+    window.addEventListener("keydown", handleMKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleMKeyDown)
+    }
+  }, [isTopQRShowing])
+
   // Global mouse handlers
   useEffect(() => {
     if (!draggedImage || draggedIndex === null) return
@@ -488,6 +505,12 @@ export default function App(props: AppProps) {
           ))}
         </div>
       )}
+
+      {isTopQRShowing ? (
+        <div className="absolute z-50 bottom-10 right-10 rounded-md bg-white p-4 shadow-lg">
+          <QRCodeSVG value="https://live-mural-gallery-q7dtqa5vvli.vercel.app/upload" />
+        </div>
+      ) : null}
     </div>
   )
 }
