@@ -438,7 +438,7 @@ useEffect(() => {
         className="absolute top-0 left-0 w-full h-full z-1 flex justify-center items-center animate-spinScale opacity-90"
       >
         <FrameRotation
-          className={props.isSping ? "animate-spinSlow" : "animate-spinFast"}
+          className={props.isSping ? "animate-spinSlow" : ""}
           width="280vw"
           height="280vh"
         />
